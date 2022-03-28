@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -58,9 +57,11 @@ class _SplashPageState extends State<SplashPage> {
 
     if (config != null &&
         config['name'] == currentAppVersion &&
-        config['versions'].contains(int.tryParse(buildNo))) {
+        config['versions'] == buildNo) {
       return true;
     } else {
+      cprint("${config!['name']} name $currentAppVersion");
+      cprint("${config['versions']} versions $buildNo");
       if (kDebugMode) {
         cprint("Latest version of app is not installed on your system");
         cprint(
@@ -93,10 +94,15 @@ class _SplashPageState extends State<SplashPage> {
   /// For package detail check:-  https://pub.dev/packages/firebase_remote_config#-readme-tab-
   Future<Map?> _getAppVersionFromFirebaseConfig() async {
     final RemoteConfig remoteConfig = RemoteConfig.instance;
+    await remoteConfig.setConfigSettings(RemoteConfigSettings(
+        fetchTimeout: const Duration(seconds: 10),
+        minimumFetchInterval: Duration.zero));
     await remoteConfig.fetchAndActivate();
     // await remoteConfig.activateFetched();
     var data = remoteConfig.getString('supportedBuild');
+    cprint("${data.toString()} supportedBuild");
     if (data.isNotEmpty) {
+      cprint("${(jsonDecode(data) as Map).toString()} jsonDecode(data) as Map");
       return jsonDecode(data) as Map;
     } else {
       cprint(
@@ -119,25 +125,15 @@ class _SplashPageState extends State<SplashPage> {
           padding: const EdgeInsets.all(50),
           decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
               Platform.isIOS
-                  ? const CupertinoActivityIndicator(
-                      radius: 35,
-                    )
-                  : const CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-              Image.asset(
-                'assets/images/icon-480.png',
-                height: 30,
-                width: 30,
-              )
+                  ? const CupertinoActivityIndicator(radius: 35)
+                  : const CircularProgressIndicator(strokeWidth: 2),
+              Image.asset('assets/images/icon-480.png', height: 30, width: 30)
             ],
           ),
         ),
@@ -149,12 +145,11 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     var state = Provider.of<AuthState>(context);
     return Scaffold(
-      backgroundColor: TwitterColor.white,
-      body: state.authStatus == AuthStatus.NOT_DETERMINED
-          ? _body()
-          : state.authStatus == AuthStatus.NOT_LOGGED_IN
-              ? const WelcomePage()
-              : const HomePage(),
-    );
+        backgroundColor: TwitterColor.white,
+        body: state.authStatus == AuthStatus.NOT_DETERMINED
+            ? _body()
+            : state.authStatus == AuthStatus.NOT_LOGGED_IN
+                ? const WelcomePage()
+                : const HomePage());
   }
 }

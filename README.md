@@ -2,7 +2,7 @@
 
 A working Twitter clone built in Flutter using Firebase auth,realtime,firestore database and storage.
 
-<a href="https://play.google.com/store/apps/details?id=com.thealphamerc.flutter_twitter_clone">
+<a href="https://play.google.com/store/apps/details?id=com.app.twitter">
   <img width="100%" alt="Fwiiter Banner" src="https://user-images.githubusercontent.com/37103237/152671482-885fd940-f4ea-4fb6-8baf-816c17b541d7.png">
 </a>
 
@@ -13,7 +13,7 @@ A working Twitter clone built in Flutter using Firebase auth,realtime,firestore 
 </a>
 
 ## Download App
-<a href="https://play.google.com/store/apps/details?id=com.thealphamerc.flutter_twitter_clone"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a>
+<a href="https://play.google.com/store/apps/details?id=com.app.twitter"><img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" width="200"></img></a>
 
 
 
